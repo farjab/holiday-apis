@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -23,13 +24,15 @@ public class HolidayController {
     private FederalHolidaysService federalHolidaysService;
 
     // checks if today is a bank holiday
+    // @param year (the year for which the query is made for)
+    // @countryCode (the country code for which the query is made for)
     @GetMapping("/checkBankHoliday")
-    public ResponseEntity<String> checkBankHoliday() {
+    public ResponseEntity<String> checkBankHoliday(@RequestParam String year, @RequestParam String countryCode) {
         LocalDate today = LocalDate.now();
 
         try {
             boolean isBankHoliday = bankHolidaysService.isWellsFargoHoliday(today);
-            boolean isFederalHoliday = federalHolidaysService.isFederalHoliday(today);
+            boolean isFederalHoliday = federalHolidaysService.isFederalHoliday(today, year, countryCode);
 
             if (isBankHoliday || isFederalHoliday) {
                 return ResponseEntity.status(HttpStatus.OK).body("Today is a bank holiday");

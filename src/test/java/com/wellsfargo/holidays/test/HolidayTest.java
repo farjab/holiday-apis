@@ -33,7 +33,7 @@ public class HolidayTest {
 
     @Test
     public void testFederalHoliday() throws IOException {
-        Set<LocalDate> holidays = federalHolidaysService.fetchFederalHolidays();
+        Set<LocalDate> holidays = federalHolidaysService.fetchFederalHolidays("2024", "US");
 
          assertTrue(holidays.contains(LocalDate.of(2024, 7, 4)));
          assertFalse(holidays.contains(LocalDate.of(2024, 1, 2)));

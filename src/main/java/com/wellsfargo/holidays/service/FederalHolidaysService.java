@@ -15,14 +15,14 @@ import java.util.Set;
 
 @Service
 public class FederalHolidaysService {
-    private static final String API_URL = "https://date.nager.at/api/v3/publicholidays/2024/US";
+    private static final String API_URL = "https://date.nager.at/api/v3/publicholidays";
 
     //get all the federal holidays
-    public Set<LocalDate> fetchFederalHolidays() throws IOException {
+    public Set<LocalDate> fetchFederalHolidays(String year, String countryCode) throws IOException {
         Set<LocalDate> federalHolidays = new HashSet<>();
 
         RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.getForObject(API_URL, String.class);
+        String response = restTemplate.getForObject(API_URL + "/" + year + "/" + countryCode, String.class);
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode holidaysArray = mapper.readTree(response);
@@ -39,8 +39,8 @@ public class FederalHolidaysService {
     }
 
 
-    public boolean isFederalHoliday(LocalDate date) throws IOException {
-        Set<LocalDate> federalHolidays = fetchFederalHolidays();
+    public boolean isFederalHoliday(LocalDate date, String year, String countryCode) throws IOException {
+        Set<LocalDate> federalHolidays = fetchFederalHolidays(year, countryCode);
         return federalHolidays.contains(date);
     }
 }
