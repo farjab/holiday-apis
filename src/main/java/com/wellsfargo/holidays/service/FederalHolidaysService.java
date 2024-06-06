@@ -28,13 +28,9 @@ public class FederalHolidaysService {
         JsonNode holidaysArray = mapper.readTree(response);
 
         for (JsonNode holidayNode : holidaysArray) {
-           // JsonNode node = holidayNode.get("types");
-           // JsonNode nl = node.get(0);
-
             LocalDate holidayDate = LocalDate.parse(holidayNode.get("date").asText());
             federalHolidays.add(holidayDate);
         }
-
         return federalHolidays;
     }
 
